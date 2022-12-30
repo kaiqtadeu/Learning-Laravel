@@ -41,6 +41,7 @@ header{
     width: 100%;
     margin-bottom: 0px;
     padding: 10px;
+    text-align: center;
 }
 
 /* Navbar */
@@ -148,6 +149,10 @@ header{
     width: 25%;
 }
 
+.dashboard-event-container form{
+    display: inline-block;
+}
+
 
 
 /* Footer */
@@ -238,4 +243,12 @@ footer p{
 
 #items-list li{
     display: flex;
+}
+
+
+/* Edit Page */
+
+.img-preview{
+    width: 150px;
+    margin-top: 20px;
 }

@@ -17,6 +17,7 @@
     <!-- CSS DA APLICAÇÃO-->
     <script src="/js/scripts.js"></script>
     <link rel="stylesheet" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
   </head>
       <body>
         <header>

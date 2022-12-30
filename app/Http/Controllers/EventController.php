@@ -35,8 +35,17 @@ class EventController extends Controller
     }
 
     public function store(Request $request){
-        $event = new Event;
 
+        $this->validate(request(), [
+            'title' => 'required',
+            'city' => 'required',
+            'private' => 'required',
+            'description' => 'required',
+            'date' => 'required',
+            'image' => 'required'
+        ]);
+
+        $event = new Event;
         $event->title = $request->title;
         $event->city = $request->city;
         $event->private = $request->private;
@@ -80,6 +89,44 @@ class EventController extends Controller
         $events = $user->events;
 
         return view('events.dashboard', ['events' => $events]);
+    }
+
+    public function destroy($id){
+        Event::findOrFail($id)->delete();
+
+        return redirect('/dashboard')->with('msg', 'Evento excluído com sucesso!');
+    }
+
+
+    public function edit($id){
+        $event = Event::findOrFail($id);
+
+        return view('events.edit', ['event' => $event]);
+
+    }
+
+    public function update(Request $request){
+        $event = Event::findOrFail($request->id);
+        $data = $request->all();
+
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+
+            unlink(public_path('img/events/' . $event->image));
+
+            $requestImage = $request->image;
+            
+            $extension = $requestImage->extension();
+
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+
+            $requestImage->move(public_path('img/events'), $imageName);
+
+            $data['image'] = $imageName;
+        }
+
+        Event::findOrFail($request->id)->update($data);
+
+        return redirect('/dashboard')->with('msg', 'Evento alterado com sucesso!');
     }
 }
 
