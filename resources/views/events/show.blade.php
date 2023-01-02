@@ -11,11 +11,29 @@
         <div id="info-container" class="col-md-6">
             <h1>{{$event->title}}</h1>
             <p class="event-city"><ion-icon name="location-outline"></ion-icon>{{$event->city}}</p>
-            <p class="event-participants"><ion-icon name="people-outline"></ion-icon>X Participantes</p>
+            <p class="event-participants"><ion-icon name="people-outline"></ion-icon>
+                @if(count($event->users) == 0)
+                Não há participantes no evento</p>
+                @else
+                {{ count($event->users) }} {{ count($event->users) <= 1 ? 'Participante' : 'Participantes' }}</p>
+                @endif
             <p class="event-owner"><ion-icon name="star-outline"></ion-icon>{{$eventOwner['name']}}</p>
-            <a href="#" class="btn btn-primary" id="event-submit">Confirmar presença</a>
+            <form action="/events/join/{{$event->id}}" method="POST">
+                @if(!$hasUserJoined)
+                @csrf
+                <a href="/events/join/{{$event->id}}" 
+                    class="btn btn-primary" 
+                    id="event-submit"
+                    onclick="event.preventDefault();
+                    this.closest('form').submit();">
+                    Confirmar presença
+                </a>
+                @else
+                  <p class="already-joined-msg">Você ja esta participando desse evento!</p>  
+                @endif
+            </form>
             <h3>O evento conta com:</h3>
-            <ul id="items-list">
+            <ul id='items-list'>
                 @if (($event->items) == null)
                     <li><ion-icon name="play-outline"></ion-icon><span>O evento não possui infra</span></li>
                 @else 
